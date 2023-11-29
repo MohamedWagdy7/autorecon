@@ -31,7 +31,7 @@ def main():
     # crawling 
     run("cat subdomains | httpx | hakrawler >> urls")
     run("cat subdomains | gau >> urls")
-    run("cat subdomains | katana >> urls")
+    run("cat subdomains | httpx | katana >> urls")
         
     # extract JS
     run("cat urls | grep js | httpx -mc 200 | tee js")
