@@ -23,8 +23,9 @@ sort subdomains | uniq >> x && rm subdomains && mv x subdomains
 cat subdomains | haktrails subdomains >>subdomains 2>/dev/null
     
 # filtering active subs
-httpx -l subdomains -o activesubs -threads 200 -status-code -follow-redirects -p 443,80,8888,8080,8443
-        
+httpx -l subdomains -o activeurls -threads 200 -status-code -follow-redirects -p 443,80,8888,8080,8443
+cat activesubs | grep -oP "(([^/]+)\.)+$1" | grep $1 | sort -u >> activesubs
+
 # crawling 
 cat subdomains | httpx | hakrawler >> urls
 cat subdomains | gau >> urls
@@ -44,3 +45,5 @@ cat urls | uro | grep "\?" | sed "s/=.*/=A\'/" | uniq > params.txt; cat params.t
 
 # param enumerate
 cat subdomains | httpx | arjun -i -oT arjun.txt
+paramspider -l subdomains
+cat urls | grep -Ev "\.js|\.css|\.jpg|\.png" | grep "=" >> params
